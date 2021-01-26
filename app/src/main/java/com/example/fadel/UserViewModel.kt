@@ -24,7 +24,7 @@ class UserViewModel(
     }
 
     fun addUser(user: UserEntity) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(Dispatchers.IO) { //Dispatcher IO for background thread
             repository.addUser(user)
         }
     }

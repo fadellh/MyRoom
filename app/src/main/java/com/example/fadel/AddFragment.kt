@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.example.fadel.data.entity.UserEntity
-import kotlinx.android.synthetic.main.fragment_add.*
 
 
 class AddFragment : Fragment() {

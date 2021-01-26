@@ -4,6 +4,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintLayoutStates
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.constraintlayout.widget.Constraints
+import androidx.navigation.Navigation
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.example.fadel.data.entity.UserEntity
 
@@ -26,6 +32,12 @@ class UserViewHolder : RecyclerView.Adapter<UserViewHolder.ListViewHolder>() {
         holder.itemView.findViewById<TextView>(R.id.tvFirstName).text = currentItem.firstName
         holder.itemView.findViewById<TextView>(R.id.tvLast).text = currentItem.lastName
         holder.itemView.findViewById<TextView>(R.id.tvAge).text = currentItem.age.toString()
+        val layout = holder.itemView.findViewById<ConstraintLayout>(R.id.rowLayout)
+
+        layout.setOnClickListener {
+            val action = ListFragmentDirections.actionListFragmentToUpdateFragment(currentItem)//current item means what data will you pass
+            holder.itemView.findNavController().navigate(action)
+        }
     }
 
     fun setData(user: List<UserEntity>) {
