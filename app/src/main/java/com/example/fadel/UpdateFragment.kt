@@ -1,13 +1,12 @@
 package com.example.fadel
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextUtils
 import android.util.Log
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
 import android.widget.Toast
@@ -30,20 +29,32 @@ class UpdateFragment : Fragment() {
 
         userViewModel = ViewModelProvider(this).get(UserViewModel::class.java)
 
-        val btnAdd = view.findViewById<Button>(R.id.btnAdd_update)
-        val etfirstName = view.findViewById<EditText>(R.id.etFirstName)
-        val etlastName = view.findViewById<EditText>(R.id.etLastName)
-        val etage = view.findViewById<EditText>(R.id.etAge)
+        val btnUpdate = view.findViewById<Button>(R.id.btnAdd_update)
+        val etfirstName = view.findViewById<EditText>(R.id.etFirstName_update)
+        val etlastName = view.findViewById<EditText>(R.id.etLastName_update)
+        val etage = view.findViewById<EditText>(R.id.etAge_update)
 
         view.findViewById<EditText>(R.id.etFirstName_update).setText(args.currentUser.firstName)
         view.findViewById<EditText>(R.id.etLastName_update).setText(args.currentUser.lastName)
         view.findViewById<EditText>(R.id.etAge_update).setText(args.currentUser.age.toString())
 
-      /*  btnAdd.setOnClickListener {
+        btnUpdate.setOnClickListener {
             updateDatabase(etfirstName,etlastName,etage)
-        }*/
+        }
 
+        setHasOptionsMenu(true) // Add Menu
         return view
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.delete_menu, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(item.itemId == R.id.menuDelete){
+            deleteUser()
+        }
+        return super.onOptionsItemSelected(item)
     }
 
     private fun updateDatabase(etFirstName: EditText, etLastName: EditText,etAge: EditText ){
@@ -55,13 +66,26 @@ class UpdateFragment : Fragment() {
 
         if(inputCheck(firstName,lasttName,age)){
             val user = UserEntity(id= args.currentUser.id, firstName = firstName, lastName = lasttName, age = Integer.parseInt(age.toString()))
-            userViewModel
+            userViewModel.updateUser(user)
             Toast.makeText(requireContext(), "Succesesfully updated", Toast.LENGTH_LONG).show()
             findNavController().navigate(R.id.action_updateFragment_to_listFragment)
         }else{
             Toast.makeText(requireContext(), "Please fill all fielded", Toast.LENGTH_LONG).show()
 
         }
+    }
+
+    private fun deleteUser() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setPositiveButton("Yes"){ _ ,_ ->
+            userViewModel.deleteUser(args.currentUser)
+            Toast.makeText(requireContext(),"Successfullly removed ${args.currentUser.firstName}",Toast.LENGTH_LONG).show()
+            findNavController().navigate(R.id.action_updateFragment_to_listFragment)
+        }
+        builder.setNegativeButton("No"){ _, _ -> }
+        builder.setTitle("Delete ${args.currentUser.firstName}?")
+        builder.setMessage("Are you sure to delete ${args.currentUser.firstName}?")
+        builder.create().show()
     }
 
 

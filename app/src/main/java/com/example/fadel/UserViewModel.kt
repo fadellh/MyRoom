@@ -29,6 +29,24 @@ class UserViewModel(
         }
     }
 
+    fun deleteUser(user: UserEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteUser(user)
+        }
+    }
+
+    fun deleteAllUser(user: UserEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.deleteAllUser(user)
+        }
+    }
+
+    fun updateUser(user: UserEntity){
+        viewModelScope.launch(Dispatchers.IO) {
+            repository.updateUser(user)
+        }
+    }
+
 
 
 }

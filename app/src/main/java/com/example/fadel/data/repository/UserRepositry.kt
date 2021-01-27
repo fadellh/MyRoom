@@ -12,4 +12,16 @@ class UserRepositry(private val userDao: UserDao) {
         userDao.addUser(userEntity)
     }
 
+    suspend fun deleteUser(userEntity: UserEntity){
+        userDao.deleteUser(userEntity)
+    }
+
+    suspend fun deleteAllUser(userEntity: UserEntity){
+        userDao.deleteAllUser()
+    }
+
+    suspend fun updateUser(userEntity: UserEntity){
+        userDao.updateUser(userEntity)
+    }
+
 }
